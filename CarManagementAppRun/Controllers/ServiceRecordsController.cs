@@ -39,12 +39,37 @@ namespace CarManagementAppRun.Controllers
         public async Task<IActionResult> Index()
         {
             var userRole = HttpContext.Session.GetString("UserRole");
+            var userEmail = HttpContext.Session.GetString("UserEmail");
+            
             if (string.IsNullOrEmpty(userRole))
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var serviceRecords = await _serviceRecordService.GetAllServiceRecordsAsync();
+            List<ServiceRecordDto> serviceRecords;
+            
+           
+            if (IsAdministrator())
+            {
+                // Admin can see all service records
+                serviceRecords = await _serviceRecordService.GetAllServiceRecordsAsync();
+            }
+            else if (IsMechanic())
+            {
+                // Mechanic can only see their assigned service records
+                serviceRecords = await _serviceRecordService.GetServiceRecordsByMechanicEmailAsync(userEmail);
+            }
+            else if (IsCustomer())
+            {
+                // Customer can only see their own service records
+                serviceRecords = await _serviceRecordService.GetServiceRecordsByCustomerEmailAsync(userEmail);
+            }
+            else
+            {
+                // Default to empty list for unknown roles
+                serviceRecords = new List<ServiceRecordDto>();
+            }
+
             ViewBag.Message = "Service Records Management";
             ViewBag.UserRole = userRole;
             return View(serviceRecords);
@@ -312,8 +337,8 @@ namespace CarManagementAppRun.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             }
 
-            var mechanicEmail = "john.mechanic@example.com";
-            var serviceRecords = await _serviceRecordService.GetServiceRecordsByMechanicEmailAsync(mechanicEmail);
+            var userEmail = HttpContext.Session.GetString("UserEmail");
+            var serviceRecords = await _serviceRecordService.GetServiceRecordsByMechanicEmailAsync(userEmail);
 
             ViewBag.Message = "My Assigned Services - Mechanic View";
             ViewBag.UserRole = userRole;
@@ -333,8 +358,8 @@ namespace CarManagementAppRun.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             }
 
-            var customerEmail = "john@example.com";
-            var serviceRecords = await _serviceRecordService.GetServiceRecordsByCustomerEmailAsync(customerEmail);
+            var userEmail = HttpContext.Session.GetString("UserEmail");
+            var serviceRecords = await _serviceRecordService.GetServiceRecordsByCustomerEmailAsync(userEmail);
 
             ViewBag.Message = "My Vehicle Services - Customer View";
             ViewBag.UserRole = userRole;
