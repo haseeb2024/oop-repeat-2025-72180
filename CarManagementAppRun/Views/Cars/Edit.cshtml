@@ -1,0 +1,81 @@
+@model CarManagementApp.Domain.DTOs.UpdateCarDto
+@{
+    ViewData["Title"] = "Edit Car";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Message</h1>
+    <p class="lead">Role: @ViewBag.UserRole</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5>Edit Car</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <input type="hidden" asp-for="Id" />
+                    
+                    <div class="mb-3">
+                        <label asp-for="RegistrationNumber" class="form-label">Registration Number</label>
+                        <input asp-for="RegistrationNumber" class="form-control" />
+                        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Make" class="form-label">Make</label>
+                        <input asp-for="Make" class="form-control" />
+                        <span asp-validation-for="Make" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Model" class="form-label">Model</label>
+                        <input asp-for="Model" class="form-control" />
+                        <span asp-validation-for="Model" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Year" class="form-label">Year</label>
+                        <input asp-for="Year" class="form-control" type="number" min="1900" max="@DateTime.Now.Year" />
+                        <span asp-validation-for="Year" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Color" class="form-label">Color</label>
+                        <input asp-for="Color" class="form-control" />
+                        <span asp-validation-for="Color" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="CustomerEmail" class="form-label">Owner</label>
+                        <select asp-for="CustomerEmail" class="form-control" required>
+                            <option value="">-- Select Owner --</option>
+                            @if (ViewBag.Customers != null)
+                            {
+                                @foreach (var customer in ViewBag.Customers)
+                                {
+                                    <option value="@customer.Email" selected="@(customer.Email == Model.CustomerEmail)">@customer.FirstName @customer.LastName (@customer.Email)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                        <small class="form-text text-muted">Select the customer who owns this car</small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <button type="submit" class="btn btn-primary">Update Car</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

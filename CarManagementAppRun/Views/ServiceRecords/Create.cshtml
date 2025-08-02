@@ -1,0 +1,96 @@
+@model CarManagementApp.Domain.DTOs.CreateServiceRecordDto
+@{
+    ViewData["Title"] = "Create Service Record";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Message</h1>
+    <p class="lead">Role: @ViewBag.UserRole</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5>Create New Service Record</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="CustomerEmail" class="form-label">Customer</label>
+                        <select asp-for="CustomerEmail" class="form-control" required>
+                            <option value="">-- Select Customer --</option>
+                            @if (ViewBag.Customers != null)
+                            {
+                                @foreach (var customer in ViewBag.Customers)
+                                {
+                                    <option value="@customer.Email">@customer.FirstName @customer.LastName (@customer.Email)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CustomerEmail" class="text-danger"></span>
+                        <small class="form-text text-muted">Select the customer who owns the car</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="CarRegistrationNumber" class="form-label">Car Registration</label>
+                        <select asp-for="CarRegistrationNumber" class="form-control" required>
+                            <option value="">-- Select Car --</option>
+                            @if (ViewBag.Cars != null)
+                            {
+                                @foreach (var car in ViewBag.Cars)
+                                {
+                                    <option value="@car.RegistrationNumber">@car.RegistrationNumber - @car.Make @car.Model (@car.CustomerName)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CarRegistrationNumber" class="text-danger"></span>
+                        <small class="form-text text-muted">Select the car to be serviced</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="ServiceDate" class="form-label">Service Date</label>
+                        <input asp-for="ServiceDate" class="form-control" type="date" />
+                        <span asp-validation-for="ServiceDate" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="MechanicEmail" class="form-label">Mechanic</label>
+                        <select asp-for="MechanicEmail" class="form-control" required>
+                            <option value="">-- Select Mechanic --</option>
+                            @if (ViewBag.Mechanics != null)
+                            {
+                                @foreach (var mechanic in ViewBag.Mechanics)
+                                {
+                                    <option value="@mechanic.Email">@mechanic.FirstName @mechanic.LastName - @mechanic.Specialization (@mechanic.Email)</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="MechanicEmail" class="text-danger"></span>
+                        <small class="form-text text-muted">Select the mechanic assigned to this service</small>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <h6>Service Information:</h6>
+                        <ul class="mb-0">
+                            <li>Service cost is €75 per hour (or partial hour)</li>
+                            <li>Hours are rounded up (e.g., 2.5 hours = 3 hours = €225)</li>
+                            <li>Work description and hours will be entered when service is completed</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <button type="submit" class="btn btn-success">Create Service Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

@@ -1,0 +1,96 @@
+@model CarManagementApp.Domain.DTOs.CarDto
+@{
+    ViewData["Title"] = "Delete Car";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Message</h1>
+    <p class="lead">Role: @ViewBag.UserRole</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5>Delete Car</h5>
+            </div>
+            <div class="card-body">
+                @if (Model != null)
+                {
+                    <div class="alert alert-danger">
+                        <h6>Are you sure you want to delete this car?</h6>
+                        <p>This action cannot be undone.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID:</dt>
+                                <dd class="col-sm-8">@Model.Id</dd>
+
+                                <dt class="col-sm-4">Registration:</dt>
+                                <dd class="col-sm-8">@Model.RegistrationNumber</dd>
+
+                                <dt class="col-sm-4">Make:</dt>
+                                <dd class="col-sm-8">@Model.Make</dd>
+
+                                <dt class="col-sm-4">Model:</dt>
+                                <dd class="col-sm-8">@Model.Model</dd>
+
+                                <dt class="col-sm-4">Year:</dt>
+                                <dd class="col-sm-8">@Model.Year</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Owner:</dt>
+                                <dd class="col-sm-8">@Model.CustomerName</dd>
+
+                                <dt class="col-sm-4">Owner Email:</dt>
+                                <dd class="col-sm-8">@Model.CustomerEmail</dd>
+
+                                <dt class="col-sm-4">Color:</dt>
+                                <dd class="col-sm-8">@Model.Color</dd>
+
+                                <dt class="col-sm-4">Status:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactive</span>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Registered:</dt>
+                                <dd class="col-sm-8">@Model.RegistrationDate.ToString("yyyy-MM-dd")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <p>Car not found.</p>
+                    </div>
+                }
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    @if (Model != null)
+                    {
+                        <form asp-action="Delete" method="post" style="display: inline;">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this car?')">
+                                Delete Car
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
