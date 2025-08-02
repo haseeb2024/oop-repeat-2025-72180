@@ -86,6 +86,7 @@ CarServiceManagement/
 4. **Run database migrations**
    ```bash
    cd CarManagementAppRun
+   dotnet ef migrations add InitialCreate
    dotnet ef database update
    ```
 
