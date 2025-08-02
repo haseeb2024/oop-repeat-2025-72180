@@ -1,0 +1,157 @@
+@model CarManagementAppRun.Controllers.TestViewModel
+
+@{
+    ViewData["Title"] = "Database Test";
+}
+
+<div class="container mt-4">
+    <h2>Database and User Test Results</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Admin User Test</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Admin Exists:</strong> @Model.AdminExists</p>
+                    @if (Model.AdminExists)
+                    {
+                        <p><strong>Admin ID:</strong> @Model.AdminId</p>
+                        <p><strong>Admin Email:</strong> @Model.AdminEmail</p>
+                        <p><strong>Admin UserName:</strong> @Model.AdminUserName</p>
+                        <p><strong>Password Hash:</strong> @(string.IsNullOrEmpty(Model.AdminPasswordHash) ? "NULL" : "SET")</p>
+                        <p><strong>Can Sign In:</strong> @Model.AdminCanSignIn</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Database Counts</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Total Users:</strong> @Model.TotalUsers</p>
+                    <p><strong>Customers:</strong> @Model.CustomersCount</p>
+                    <p><strong>Mechanics:</strong> @Model.MechanicsCount</p>
+                    <p><strong>Cars:</strong> @Model.CarsCount</p>
+                    <p><strong>Service Records:</strong> @Model.ServiceRecordsCount</p>
+                    <p><strong>Customers from Service:</strong> @Model.CustomerServiceCount</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Customers from Service</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.CustomersFromService.Any())
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Cars</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var customer in Model.CustomersFromService)
+                                {
+                                    <tr>
+                                        <td>@customer.Id</td>
+                                        <td>@customer.FirstName @customer.LastName</td>
+                                        <td>@customer.Email</td>
+                                        <td>@customer.PhoneNumber</td>
+                                        <td>@customer.CarCount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-danger">No customers found from service!</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>All Users in Database</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Users.Any())
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>UserName</th>
+                                    <th>FirstName</th>
+                                    <th>LastName</th>
+                                    <th>Password Hash</th>
+                                    <th>Is Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.Users)
+                                {
+                                    <tr>
+                                        <td>@user.Id</td>
+                                        <td>@user.Email</td>
+                                        <td>@user.UserName</td>
+                                        <td>@user.FirstName</td>
+                                        <td>@user.LastName</td>
+                                        <td>@(string.IsNullOrEmpty(user.PasswordHash) ? "NULL" : "SET")</td>
+                                        <td>@user.IsActive</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-danger">No users found in database!</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Login Test</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/Account/Login">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" value="admin@example.com" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" value="123" />
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Test Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

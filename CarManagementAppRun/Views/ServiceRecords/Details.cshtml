@@ -1,0 +1,111 @@
+@model CarManagementApp.Domain.DTOs.ServiceRecordDto
+@{
+    ViewData["Title"] = "Service Record Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Message</h1>
+    <p class="lead">Role: @ViewBag.UserRole</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5>Service Record Details</h5>
+            </div>
+            <div class="card-body">
+                @if (Model != null)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID:</dt>
+                                <dd class="col-sm-8">@Model.Id</dd>
+
+                                <dt class="col-sm-4">Car Registration:</dt>
+                                <dd class="col-sm-8">@Model.CarRegistrationNumber</dd>
+
+                                <dt class="col-sm-4">Customer:</dt>
+                                <dd class="col-sm-8">@Model.CustomerName</dd>
+
+                                <dt class="col-sm-4">Customer Email:</dt>
+                                <dd class="col-sm-8">@Model.CustomerEmail</dd>
+
+                                <dt class="col-sm-4">Service Date:</dt>
+                                <dd class="col-sm-8">@Model.ServiceDate.ToString("yyyy-MM-dd")</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Mechanic:</dt>
+                                <dd class="col-sm-8">@Model.MechanicName</dd>
+
+                                <dt class="col-sm-4">Mechanic Email:</dt>
+                                <dd class="col-sm-8">@Model.MechanicEmail</dd>
+
+                                <dt class="col-sm-4">Status:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.IsCompleted)
+                                    {
+                                        <span class="badge bg-success">Completed</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">In Progress</span>
+                                    }
+                                </dd>
+
+                                <dt class="col-sm-4">Hours Worked:</dt>
+                                <dd class="col-sm-8">@Model.HoursWorked hours</dd>
+
+                                <dt class="col-sm-4">Total Cost:</dt>
+                                <dd class="col-sm-8">€@Model.TotalCost</dd>
+
+                                @if (Model.CompletionDate.HasValue)
+                                {
+                                    <dt class="col-sm-4">Completed:</dt>
+                                    <dd class="col-sm-8">@Model.CompletionDate.Value.ToString("yyyy-MM-dd HH:mm")</dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.WorkDescription))
+                    {
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6>Work Description:</h6>
+                                <div class="alert alert-info">
+                                    @Model.WorkDescription
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <p>Service record not found.</p>
+                    </div>
+                }
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    @if (Model != null)
+                    {
+                        <div>
+                            @if (!Model.IsCompleted)
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                                <a asp-action="Complete" asp-route-id="@Model.Id" class="btn btn-success">Mark Complete</a>
+                            }
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

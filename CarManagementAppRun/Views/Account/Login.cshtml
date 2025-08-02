@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="login-container">
+    <div class="login-card fade-in">
+        <div class="text-center mb-4">
+            <h2 class="mb-3">🚗 Car Management System</h2>
+            <p class="text-muted">Sign in to access your dashboard</p>
+        </div>
+        
+        <form asp-action="Login" method="post">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+            </div>
+        </form>
+
+        <hr class="my-4">
+
+       
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

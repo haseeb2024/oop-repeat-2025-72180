@@ -1,0 +1,115 @@
+@model IEnumerable<CarManagementApp.Domain.DTOs.ServiceRecordDto>
+@{
+    ViewData["Title"] = "Service Records";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Message</h1>
+    <p class="lead">Role: @ViewBag.UserRole</p>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Service Records Management</h5>
+                @if (ViewBag.UserRole == "Administrator")
+                {
+                    <a asp-action="Create" class="btn btn-success">Create New Service Record</a>
+                }
+            </div>
+            <div class="card-body">
+                <p>This is the service records management area. Different roles have different access levels.</p>
+                
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Car</th>
+                                    <th>Customer</th>
+                                    <th>Service Date</th>
+                                    <th>Mechanic</th>
+                                    <th>Status</th>
+                                    <th>Hours</th>
+                                    <th>Cost</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var service in Model)
+                                {
+                                    <tr>
+                                        <td>@service.Id</td>
+                                        <td>@service.CarRegistrationNumber</td>
+                                        <td>@service.CustomerName</td>
+                                        <td>@service.ServiceDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@service.MechanicName</td>
+                                        <td>
+                                            @if (service.IsCompleted)
+                                            {
+                                                <span class="badge bg-success">Completed</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning">In Progress</span>
+                                            }
+                                        </td>
+                                        <td>@service.HoursWorked hours</td>
+                                        <td>€@service.TotalCost</td>
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@service.Id" class="btn btn-sm btn-info">Details</a>
+                                            @if (!service.IsCompleted && ViewBag.UserRole == "Administrator")
+                                            {
+                                                <a asp-action="Edit" asp-route-id="@service.Id" class="btn btn-sm btn-primary">Edit</a>
+                                            }
+                                            @if (!service.IsCompleted && ViewBag.UserRole == "Mechanic")
+                                            {
+                                                <a asp-action="Complete" asp-route-id="@service.Id" class="btn btn-sm btn-success">Complete</a>
+                                            }
+                                            @if (ViewBag.UserRole == "Administrator")
+                                            {
+                                                <a asp-action="Delete" asp-route-id="@service.Id" class="btn btn-sm btn-danger">Delete</a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <p>No service records found.</p>
+                        @if (ViewBag.UserRole == "Administrator")
+                        {
+                            <p><a asp-action="Create">Create the first service record</a></p>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-3">
+    <a asp-controller="Home" asp-action="Dashboard" class="btn btn-primary">Back to Dashboard</a>
+</div> 

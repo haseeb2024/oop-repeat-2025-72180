@@ -1,0 +1,96 @@
+@{
+    ViewData["Title"] = "My Vehicle Services";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Message</h1>
+    <p class="lead">Role: @ViewBag.UserRole</p>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>My Vehicle Services</h5>
+            </div>
+            <div class="card-body">
+                <p>As a Customer, you can view the service history for your vehicles.</p>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">My Vehicle Service History</h5>
+                                <p class="card-text">View service status, completion dates, mechanic names, and total costs.</p>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Service ID</th>
+                                                <th>My Car Registration</th>
+                                                <th>Service Date</th>
+                                                <th>Status</th>
+                                                <th>Completion Date</th>
+                                                <th>Assigned Mechanic</th>
+                                                <th>Hours Worked</th>
+                                                <th>Total Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>SR001</td>
+                                                <td>ABC123 (My Car)</td>
+                                                <td>2025-01-15</td>
+                                                <td><span class="badge bg-warning">In Progress</span></td>
+                                                <td>-</td>
+                                                <td>John Mechanic</td>
+                                                <td>2.5</td>
+                                                <td>€225</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SR002</td>
+                                                <td>XYZ789 (My Car)</td>
+                                                <td>2025-01-16</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>2025-01-16</td>
+                                                <td>Mike Mechanic</td>
+                                                <td>3.0</td>
+                                                <td>€225</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SR003</td>
+                                                <td>DEF456 (My Car)</td>
+                                                <td>2025-01-10</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>2025-01-10</td>
+                                                <td>John Mechanic</td>
+                                                <td>1.5</td>
+                                                <td>€150</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <h6>Service Information:</h6>
+                                    <ul>
+                                        <li><strong>Service Status:</strong> Check if your service is in progress or completed</li>
+                                        <li><strong>Completion Date:</strong> See when your service was completed</li>
+                                        <li><strong>Mechanic Name:</strong> Know which mechanic worked on your car</li>
+                                        <li><strong>Total Cost:</strong> €75 per hour (rounded up for partial hours)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Home" asp-action="Dashboard" class="btn btn-primary">Back to Dashboard</a>
+    <a asp-action="Index" class="btn btn-secondary">View All Services</a>
+</div> 
